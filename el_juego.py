@@ -44,10 +44,10 @@ class ElJuego:
 
     def _can_play(self, p):
         for c in self.hands[p]:
-            if c > self.stacks[0][-1] or c - 10 == self.stacks[0][-1] \
-                    or c > self.stacks[1][-1] or c - 10 == self.stacks[1][-1] \
-                    or c < self.stacks[2][-1] or c + 10 == self.stacks[2][-1] \
-                    or c < self.stacks[3][-1] or c + 10 == self.stacks[3][-1]:
+            if c > self.stacks[0][-1] or c == self.stacks[0][-1] - 10 \
+                    or c > self.stacks[1][-1] or c == self.stacks[1][-1] - 10\
+                    or c < self.stacks[2][-1] or c == self.stacks[2][-1] + 10\
+                    or c < self.stacks[3][-1] or c == self.stacks[3][-1] + 10:
                 return True
         return False
 
@@ -67,12 +67,12 @@ class ElJuego:
         if move[1] not in range(0, 4):
             return False
         if move[1] == 0 or move[1] == 1:
-            if move[0] < self.stacks[move[1]][-1] and move[0] - 10 != self.stacks[move[1]][-1]:
-                return False
+            if move[0] > self.stacks[move[1]][-1] or move[0] == self.stacks[move[1]][-1] - 10:
+                return True
         elif move[1] == 2 or move[1] == 3:
-            if move[0] > self.stacks[move[1]][-1] and move[0] + 10 != self.stacks[move[1]][-1]:
-                return False
-        return True
+            if move[0] < self.stacks[move[1]][-1] or move[0] == self.stacks[move[1]][-1] + 10:
+                return True
+        return False
 
     def _play(self, current_p, nb_moves_current_p):
         try:
