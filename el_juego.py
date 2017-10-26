@@ -1,4 +1,5 @@
 """p stands for player(s). c for card(s)"""
+import os
 import random
 
 map_p_c = {1: 8, 2: 7, 3: 6, 4: 5, 5: 4}
@@ -24,7 +25,7 @@ class ElJuego:
         win = False
         nb_moves_current_p = 0
         while (self._can_play(current_p) or nb_moves_current_p >= self._nb_min_moves()) and not win:
-            print("\nP", current_p, sep="")
+            print("P", current_p, " - ", len(self.deck), " cards left in deck.", sep="")
             print("Stacks: 0: A[", self.stacks[0][-1], "], 1: A[", self.stacks[1][-1], "], 2: D[",
                   self.stacks[2][-1], "], 3: D[", self.stacks[3][-1], "]", sep="")
             print("Your hand:", self.hands[current_p])
@@ -37,6 +38,7 @@ class ElJuego:
                 self._pick_c(current_p)
                 current_p = self._next_p(current_p)
                 nb_moves_current_p = 0
+                os.system("clear")
         if win:
             print("Game over, you win.")
         if not win:
@@ -80,6 +82,7 @@ class ElJuego:
                 print("Your move (x to end your turn): ", end="")
                 move = input()
                 if move == "x":
+                    print()
                     return 0
                 else:
                     move = tuple(int(x.strip()) for x in move.split(' '))
@@ -89,10 +92,12 @@ class ElJuego:
             if self._is_valid_move(current_p, move):
                 self.stacks[move[1]].append(move[0])
                 self.hands[current_p].remove(move[0])
+                print()
                 return 1
         except Exception as e:
             pass
-        print("Forbidden move.")
+        print()
+        print("Invalid move.")
         return -1
 
     def _next_p(self, current_p):
@@ -117,6 +122,7 @@ class ElJuego:
 
 def main():
     ElJuego(1)
+
 
 if __name__ == '__main__':
     main()
