@@ -5,7 +5,7 @@ import random
 map_p_c = {1: 8, 2: 7, 3: 6, 4: 5, 5: 4}
 
 
-class ElJuego:
+class ElJuego(object):
     def __init__(self, nb_p):
         self.nb_p = nb_p
         self.deck = list(range(2, 100))
@@ -25,9 +25,11 @@ class ElJuego:
         win = False
         nb_moves_current_p = 0
         while (self._can_play(current_p) or nb_moves_current_p >= self._nb_min_moves()) and not win:
-            print("P", current_p, " - ", len(self.deck), " cards left in deck.", sep="")
-            print("Stacks: 0: A[", self.stacks[0][-1], "], 1: A[", self.stacks[1][-1], "], 2: D[",
-                  self.stacks[2][-1], "], 3: D[", self.stacks[3][-1], "]", sep="")
+            print("P {} - {} cards left in deck.".format(current_p, len(self.deck)), sep="")
+            print("Stacks: 0: A[{}, ], 1: A[{}], 2: D[{}], 3: D[{}]".format(self.stacks[0][-1],
+                                                                            self.stacks[1][-1],
+                                                                            self.stacks[2][-1],
+                                                                            self.stacks[3][-1]), sep="")
             print("Your hand:", self.hands[current_p])
             res = self._play(current_p, nb_moves_current_p)
             if self._is_win():
@@ -41,14 +43,14 @@ class ElJuego:
                 os.system("clear")
         if win:
             print("Game over, you win.")
-        if not win:
+        else:
             print("Game over loser.")
 
     def _can_play(self, p):
         for c in self.hands[p]:
             if c > self.stacks[0][-1] or c == self.stacks[0][-1] - 10 \
-                    or c > self.stacks[1][-1] or c == self.stacks[1][-1] - 10\
-                    or c < self.stacks[2][-1] or c == self.stacks[2][-1] + 10\
+                    or c > self.stacks[1][-1] or c == self.stacks[1][-1] - 10 \
+                    or c < self.stacks[2][-1] or c == self.stacks[2][-1] + 10 \
                     or c < self.stacks[3][-1] or c == self.stacks[3][-1] + 10:
                 return True
         return False
@@ -96,8 +98,7 @@ class ElJuego:
                 return 1
         except Exception as e:
             pass
-        print()
-        print("Invalid move.")
+        print("\nInvalid move.")
         return -1
 
     def _next_p(self, current_p):
